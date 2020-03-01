@@ -1,2 +1,2 @@
-# dailyTrends
+# Daily Trends
 Newspaper

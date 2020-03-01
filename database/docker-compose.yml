@@ -1,0 +1,30 @@
+version: "2.1"
+
+services:
+  api-mongodb:
+    container_name: api-mongodb
+    image: mongo:3.6.4
+    restart: always   
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ${PWD}/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      - NODE_ENV=development
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=fHYmOGIIsjBxbvcp
+    healthcheck:
+      test: mongo --eval "db.runCommand('ping').ok"
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      daily-trends-network:
+        aliases:
+          - api-daily-trends
+
+volumes:
+  mongo-data:
+    name: mongo-data
+      
