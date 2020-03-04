@@ -1,13 +1,12 @@
 import {Entity, ObjectID, ObjectIdColumn, Column, PrimaryGeneratedColumn, PrimaryColumn, BaseEntity} from "typeorm";
-import { uuid } from 'uuidv4';
 import {ObjectId} from'mongodb';
 
 
 @Entity()
-export class  Feed extends BaseEntity {
+export class  Feed {
 
     @ObjectIdColumn()
-    _id: ObjectId | undefined;
+    _id: ObjectId;
 
     @Column ({
         length: 300
