@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { Feed } from "../models/feed.entity";
-import { WebScrappingService } from "../services/webscraping";
+import { WebScrappingService } from "../services/web-scraping.service";
 import { ObjectId } from "mongodb";
 /**
  * Loads all posts from the database.
@@ -57,8 +57,7 @@ export async function feedGetAlls(request: Request, response: Response) {
     const feeds = await feedRepository.find();
 
     // here method, news compare
-    // const newNews = await scrappingService.fetchElPais();
-    // const allFeeds  = await feedRepository.save(newNews)
-    const allFeeds  = 'test';
+    const newNews = await scrappingService.fetchElPais();
+    const allFeeds  = await feedRepository.save(newNews)
     response.send(allFeeds);
 }

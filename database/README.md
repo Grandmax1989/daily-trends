@@ -1,16 +1,10 @@
 # API DB SERVICE
-
-DB to persist all REST-API endpoint data forPI models.
+DB to persist all REST-API endpoint data for API models.
 
 ## Stack
 * MongoDB
 
-## REST API
-N/A
-
 ## DOCKER
 Build and launch service
 
-
-## Testing
-N/A
+docker-compose up -d

@@ -1,6 +1,9 @@
 # Daily Trends
 Newspaper
 
+# v0.4
+Add web scraping service
+
 # v0.3
 Add feed controller
 
