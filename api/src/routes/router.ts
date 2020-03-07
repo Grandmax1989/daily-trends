@@ -1,4 +1,4 @@
-import { feedGetAll, feedGetAlls, feedGetById, feedSave, deleteById } from "../controller/feed.controller";
+import { feedGetAll, feedGetById, feedSave, deleteById, feedUpdate } from "../controller/feed.controller";
 
 /**
  * All application routes.
@@ -9,11 +9,11 @@ export const AppRoutes = [
         method: "get",
         action: feedGetAll
     },
-    {
-        path: "/",
-        method: "get",
-        action: feedGetAlls
-    },
+    // {
+    //     path: "/",
+    //     method: "get",
+    //     action: feedGetAlls,
+    // },
     {
         path: "/feeds/:id",
         method: "get",
@@ -28,5 +28,10 @@ export const AppRoutes = [
         path: "/feeds/:id",
         method: "delete",
         action: deleteById
+    },
+    {
+        path: "/feeds",
+        method: "patch",
+        action: feedUpdate
     },
 ];

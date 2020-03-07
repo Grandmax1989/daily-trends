@@ -25,4 +25,6 @@ export class  Feed {
     @Column()
     publisher?: string;
 
+    @Column()
+    createdAt?: Date;
 }
