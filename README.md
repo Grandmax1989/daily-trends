@@ -1,14 +1,31 @@
-# Daily Trends
-Newspaper
+# Project Title
+Daily Trends
+## Getting Started
 
-# v0.4
-Add web scraping service
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-# v0.3
-Add feed controller
+### Prerequisites
 
-# v0.2
-Add feed entity
+What things you need to install the software and how to install them
 
-# v0.1
-Added basic node architecture and database
+```
+Docker && docker-compose 
+```
+
+
+### Deployment
+
+
+```bash
+docker-compose up --build -d
+```
+
+Add additional notes about how to deploy this on a live system
+
+## Authors
+
+* **David Poveda** - *Initial work* - [PurpleBooth](https://github.com/shurdev)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details

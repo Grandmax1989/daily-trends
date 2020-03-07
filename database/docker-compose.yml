@@ -1,8 +1,8 @@
 version: "2.1"
 
 services:
-  api-mongodb:
-    container_name: api-mongodb
+  database:
+    container_name: database
     image: mongo:3.6.4
     restart: always   
     ports:
@@ -22,9 +22,13 @@ services:
     networks:
       daily-trends-network:
         aliases:
-          - api-daily-trends
+          - mongo
 
 volumes:
   mongo-data:
     name: mongo-data
       
+networks:
+  daily-trends-network:
+    external:
+      name: daily-trends-network

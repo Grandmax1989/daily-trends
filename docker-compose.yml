@@ -1,0 +1,76 @@
+version: "2.1"
+services:
+  database:
+    container_name: database
+    image: mongo:3.6.4
+    restart: always   
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./database/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      - NODE_ENV=development
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=fHYmOGIIsjBxbvcp
+    healthcheck:
+      test: mongo --eval "db.runCommand('ping').ok"
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      daily-trends-network:
+        aliases:
+          - mongo
+  angular-service: # The name of the service
+    container_name: angularcontainer  # Container name
+    build:
+      context: ./webapp
+      dockerfile: ./Dockerfile
+    ports: 
+        - '80:80' # Port mapping
+    networks:
+      daily-trends-network:
+        aliases:
+          - webapp
+  api:
+    container_name: api
+    env_file: ./api/.env
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: docker/api
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - database
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - TYPEORM_CONNECTION=mongodb
+      - TYPEORM_HOST=database
+      - TYPEORM_USERNAME=dailyUser
+      - TYPEORM_PASSWORD=wSdPIchNyR8F09QH
+      - TYPEORM_DATABASE=daily-trends
+      - TYPEORM_PORT=27017
+      - TYPEORM_SYNCHRONIZE=false
+      - TYPEORM_LOGGING=false
+      - TYPEORM_ENTITIES=src/models/*.ts
+      - TYPEORM_MIGRATIONS=src/migration/**/*.ts
+      - TYPEORM_SUBSCRIBERS=src/subscriber/**/*.ts
+      - TYPEORM_LOGGING=true
+    networks:
+      daily-trends-network:
+        aliases:
+          - api
+    volumes:
+      - ./api:/app
+
+volumes:
+  mongo-data:
+    name: mongo-data
+    
+networks:
+  daily-trends-network:
+    name: daily-trends-network
