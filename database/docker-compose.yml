@@ -9,7 +9,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-      - ${PWD}/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./database/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     environment:
       - NODE_ENV=development
       - MONGO_INITDB_ROOT_USERNAME=admin

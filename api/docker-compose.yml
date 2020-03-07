@@ -8,6 +8,8 @@ services:
           dockerfile: ./Dockerfile
         image: docker/api
         restart: always
+        environment: 
+          - TYPEORM_HOST=database
         ports:
           - "3000:3000"
         networks:
