@@ -1,0 +1,39 @@
+<mat-icon class="add-icon" matTooltip="Volver" (click)="return()">arrow_back</mat-icon>
+
+<div class="detail-view-wrapper">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="wrapper">
+            <mat-form-field class="form__field">
+                <input placeholder="Escribe un título" matInput formControlName="title">
+            </mat-form-field>
+            <mat-form-field class="form__field">
+                <input placeholder="Editor" matInput formControlName="publisher">
+            </mat-form-field>
+            <mat-form-field class="form__field">
+                <input placeholder="Imagen" matInput formControlName="image">
+            </mat-form-field>
+            <mat-error *ngIf="!form.get('image').valid">
+                Url no valida
+            </mat-error>
+            <mat-form-field class="form__field">
+                <input placeholder="Fuente" matInput formControlName="source">
+            </mat-form-field>
+            <mat-form-field class="form__field">
+                <textarea placeholder="Escribe el contenido de la notícia" matInput rows="5"
+                    formControlName="body"></textarea>
+            </mat-form-field>
+
+            <div class="button-container">
+                 <button class="form__login__submit zform__login__items" type="button" mat-button color="primary"
+                    [disabled]="!form.valid" (click)="submit(form.value)"><a
+                        class="form__login__submit_text">Guardar</a></button>
+                 <button *ngIf="form.get('_id').value" class="form__login__submit zform__login__items" type="button"
+                    mat-button color="primary" [disabled]="disabled" (click)="delete(form.value)"><a
+                        class="form__login__submit_text">Borrar</a></button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="detail-view-wrapper">
+    <img [src]="form.get('image').value">
+</div>
