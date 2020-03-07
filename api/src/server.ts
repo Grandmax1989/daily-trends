@@ -14,7 +14,7 @@ const job = new CronJob(
   '* * * * *', 
   async () => {
     await scrappingService.fetchElPais()
-    await scrappingService.fetchElMundo();
+    // await scrappingService.fetchElMundo();
   }, 
   null, 
   true, 
@@ -31,7 +31,6 @@ createConnection().then(async connection => {
 
   AppRoutes.forEach(route => {
     app[route.method](route.path, (request: Request, response: Response, next: Function) => {
-      console.log(route)
       route.action(request, response)
         .then(() => next)
         .catch((err: any) => next(err));
@@ -43,6 +42,6 @@ createConnection().then(async connection => {
   console.log("Express application is up and running on port 3000");
 
   await scrappingService.fetchElPais();
-  await scrappingService.fetchElMundo();
+  // await scrappingService.fetchElMundo();
 
 }).catch(error => console.log("TypeORM connection error: ", error));

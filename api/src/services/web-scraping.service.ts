@@ -10,7 +10,7 @@ export class WebScrappingService {
     async fetchElPais() {
         try {
             // open the headless browser
-            var browser = await puppeteer.launch({ headless: true });
+            var browser = await puppeteer.launch({ headless: true ,  args: ['--no-sandbox']});
             // open a new page
             var page = await browser.newPage();
             // enter url in page
@@ -18,14 +18,14 @@ export class WebScrappingService {
 
             // const test = await page.$eval('.story_card', (e: any) => e.innerHTML);
             const webElements = await page.evaluate(() => {
-                const elements = Array.from(document.querySelectorAll('.story_card'));
+                const elements = Array.from(document.querySelectorAll('.story_card')).slice(0, 5);
                 return elements.map(e => ({
-                    title: e.querySelector('.headline > a').innerHTML,
+                    title: e.querySelector('.headline > a') ? e.querySelector('.headline > a').innerHTML : e.querySelector('.headline').innerHTML,
                     body: e.querySelector('.description') ? e.querySelector('.description').innerHTML : '',
                     image: e.querySelector('img') ? e.querySelector('img').src : '',
-                    source: (e.querySelector('.headline > a') as HTMLLinkElement).href,
+                    source: e.querySelector('.headline > a') ? (e.querySelector('.headline > a') as HTMLLinkElement).href : 'https://elpais.com/ultimas-noticias/',
                     publisher: 'El País',
-                })).slice(0, 5);
+                }));
             });
 
             await this.persistFeeds(webElements);
@@ -34,13 +34,12 @@ export class WebScrappingService {
         }
 
         await browser.close();
-        console.log("Browser Closed");
     }
 
     async fetchElMundo() {
         try {
             // open the headless browser
-            var browser = await puppeteer.launch({ headless: true });
+            var browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
             // open a new page
             var page = await browser.newPage();
             // enter url in page
@@ -48,7 +47,7 @@ export class WebScrappingService {
 
             // const test = await page.$eval('.story_card', (e: any) => e.innerHTML);
             const webElements = await page.evaluate(() => {
-                const elements = Array.from(document.querySelectorAll('.auto-items > .content-item'));
+                const elements = Array.from(document.querySelectorAll('.auto-items > .content-item')).slice(0, 5);
                 return elements.map(e => ({
                     title: e.querySelector('.mod-title > a').innerHTML,
                     // Elements have no description
@@ -56,7 +55,7 @@ export class WebScrappingService {
                     image: e.querySelector('img') ? e.querySelector('img').src : '',
                     source: (e.querySelector('.mod-title > a') as HTMLLinkElement).href,
                     publisher: 'El Mundo',
-                })).slice(0, 5);
+                }))
             });
 
             await this.persistFeeds(webElements);
@@ -64,7 +63,6 @@ export class WebScrappingService {
             console.log(err);
         }
         await browser.close();
-        console.log("Browser Closed");
     }
     async persistFeeds(feeds: Feed[]) {
         const feedRepository = getManager().getRepository(Feed);
@@ -72,7 +70,6 @@ export class WebScrappingService {
         return Promise.all(feeds.map(
             async feed => {
                 const exists = await feedRepository.findOne({ title: feed.title, publisher: feed.publisher });
-                console.log(exists)
                 if (!exists) {
                     const feedItem = new Feed();
                     Object.assign(feedItem, feed);
